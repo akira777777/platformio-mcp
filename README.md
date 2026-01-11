@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Cline-PlatformIO-MCP-Server-Logo.png" alt="PlatformIO MCP Server Logo" width="200"/>
+</p>
+
 # PlatformIO MCP Server
 
 A board-agnostic Model Context Protocol (MCP) server for [PlatformIO](https://platformio.org) embedded development. This server enables AI agents like [Cline](https://github.com/cline/cline) to interact with PlatformIO's comprehensive ecosystem of **1,000+ development boards** across **30+ platforms**.
