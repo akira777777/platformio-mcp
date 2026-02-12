@@ -190,7 +190,10 @@ export function isPlatformIONotFoundError(error: unknown): boolean {
       message.includes('enoent') ||
       message.includes('not found') ||
       message.includes('command not found') ||
-      message.includes('platformio') && message.includes('not recognized')
+      message.includes('platformio') && message.includes('not recognized') ||
+      message.includes('spawn') ||
+      message.includes('no such file or directory') ||
+      error.message.includes('PlatformIONotInstalledError')
     );
   }
   return false;

@@ -32,7 +32,7 @@ export async function execPioCommand(
   const timeout = options.timeout ?? DEFAULT_TIMEOUT;
 
   try {
-    // Try 'pio' first, then fall back to 'platformio'
+    // Try 'pio' first, then 'platformio', then 'python -m platformio'
     let result;
     try {
       result = await execFileAsync('pio', args, {
@@ -50,10 +50,23 @@ export async function execPioCommand(
             maxBuffer: 10 * 1024 * 1024,
           });
         } catch (secondError) {
+          // If 'platformio' not found, try 'python -m platformio'
           if (isPlatformIONotFoundError(secondError)) {
-            throw new PlatformIONotInstalledError();
+            try {
+              result = await execFileAsync('C:\\Program Files\\Python313\\python.exe', ['-m', 'platformio', ...args], {
+                cwd: options.cwd,
+                timeout,
+                maxBuffer: 10 * 1024 * 1024,
+              });
+            } catch (thirdError) {
+              if (isPlatformIONotFoundError(thirdError)) {
+                throw new PlatformIONotInstalledError();
+              }
+              throw thirdError;
+            }
+          } else {
+            throw secondError;
           }
-          throw secondError;
         }
       } else {
         throw firstError;
